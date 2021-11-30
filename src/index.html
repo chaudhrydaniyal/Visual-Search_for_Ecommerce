@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <title>Visual Search for Ecommerce</title>
+</head>
+
+
+<style>
+    /*just bg and body style*/
+    .container {
+        background-color: #1E2832;
+        padding-bottom: 20px;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    #top {
+        margin-top: 20px;
+    }
+
+    .btn-container {
+        background: #fff;
+        border-radius: 5px;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+    .white {
+        color: white;
+    }
+
+    .imgupload {
+        color: #1E2832;
+        padding-top: 40px;
+        font-size: 7em;
+    }
+
+    #namefile {
+        color: black;
+    }
+
+    h4>strong {
+        color: #ff3f3f
+    }
+
+    .btn-primary {
+        border-color: #ff3f3f !important;
+        color: #ffffff;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+        background-color: #ff3f3f !important;
+        border-color: #ff3f3f !important;
+    }
+
+    /*these two are set to not display at start*/
+    .imgupload.ok {
+        display: none;
+        color: green;
+    }
+
+    .imgupload.stop {
+        display: none;
+        color: red;
+    }
+
+
+
+
+    /*switch between input and not active input*/
+    #submitbtn {
+        padding: 5px 50px;
+     
+    }
+
+    #fakebtn {
+        padding: 5px 40px;
+    }
+
+
+    /*www.emilianocostanzo.com*/
+    #sign {
+        
+        color: #1E2832;
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        text-shadow: 0px 0px 0px #1E2832;
+        transition: all.3s;
+    }
+
+    #sign:hover {
+        color: #1E2832;
+        text-shadow: 0px 0px 5px #1E2832;
+    }
+</style>
+
+<body>
+
+
+
+    <div class="container center">
+        <div class="row">
+            <div class="col-md-12">
+
+                <br></br>
+                <h1 class="white">Visual Search for Ecommerce</h1>
+                <p class="white">Upload is allowed only in case the user selects a valid image file.
+                </p>
+            </div>
+        </div>
+
+        <form name="upload" method="POST" action="/" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 center">
+                    <div class="btn-container">
+                        <!--the three icons: default, ok file (img), error file (not an img)-->
+                        <h1 class="imgupload"><i class="fa fa-file-image-o"></i></h1>
+                        <h1 class="imgupload ok"><i class="fa fa-check"></i></h1>
+                        <h1 class="imgupload stop"><i class="fa fa-times"></i></h1>
+                        <!--this field changes dinamically displaying the filename we are trying to upload-->
+                        <p id="namefile">Only images allowed! (jpg,jpeg,bmp,png)</p>
+                        <!--our custom btn which which stays under the actual one-->
+                        
+                        <!--this is the actual file input, is set with opacity=0 beacause we wanna see our custom one-->
+                        <input type="file" value="" name="file" id="fileup" />
+                    </div>
+                </div>
+            </div>
+            <!--additional fields-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!--the defauld disabled btn and the actual one shown only if the three fields are valid-->
+                    <input type="submit" value="Upload" class="btn btn-primary" id="submitbtn"  disabled ='true'/>
+                   
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <a href="https://daniyalkhalid.herokuapp.com/" target="_blank" id="sign">Chaudhry Daniyal Khalid</a>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+
+<script>
+    $('#fileup').change(function(){
+//here we take the file extension and set an array of valid extensions
+    var res=$('#fileup').val();
+    
+    var arr = res.split("\\");
+    var filename=arr.slice(-1)[0];
+    filextension=filename.split(".");
+    filext="."+filextension.slice(-1)[0];
+    console.log(filext)
+    valid=[".jpg",".png",".jpeg",".bmp"];
+//if file is not valid we show the error icon, the red alert, and hide the submit button
+    if (!(valid.indexOf(filext.toLowerCase())==-1)){
+        console.log(filext)
+        document.getElementById("submitbtn").disabled =false;}
+    
+        
+    })
+ 
+</script>
+
+
+</html>

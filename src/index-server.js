@@ -1,12 +1,161 @@
-const express = require('express')
-const app = express()
-const port = 3000
-
 const bodyParser = require('body-parser');
 
 const scrapers = require('./scrapers');
-const db = require('./database')
 var { spawn } = require('child_process');
+
+
+const express= require('express')
+const upload= require('express-fileupload')
+
+var resultArray = [];
+
+
+
+
+// MongoDB 
+
+var MongoClient = require('mongodb').MongoClient;  
+async function writeData(dataToMongodb) {
+  const client = new MongoClient("mongodb://localhost:27017/mydb1");
+  client.connect()
+  const db = client.db();
+
+  await db.collection('results').insertOne(dataToMongodb)
+
+  client.close()
+}
+
+
+
+
+async function resetDB() {
+  const client = new MongoClient("mongodb://localhost:27017/mydb1");
+  client.connect()
+  const db = client.db();
+  if (await db.collection('results').count()){
+  await db.collection('results').drop()
+  }
+
+  client.close()
+}
+
+
+// async function readData() {
+//   resultArray = [];
+//   const client = new MongoClient("mongodb://localhost:27017/mydb1");
+//   client.connect()
+//   const db = client.db();
+
+//   var cursor = await db.collection('results').find({}).toArray()
+//   cursor.forEach(function(doc,err){resultArray.push(doc)})
+
+//   console.log(resultArray)
+
+//   client.close()
+// }
+
+
+
+
+const app = express()
+
+app.use(upload())
+
+
+app.get('/', (req,res)=>{res.sendFile(__dirname + '/index.html')})
+app.get('/results', (req,res)=>{
+  
+ 
+  res.sendFile(__dirname + '/results.html');
+
+  // const client = new MongoClient("mongodb://localhost:27017/mydb1");
+  // client.connect()
+  // const db = client.db();
+
+  // db.collection('results').find({}).toArray((err,result)=>{
+  //   res.write(JSON.stringify(res))
+  // })
+  
+
+
+  // readData()
+  // resultArray.forEach((r)=>{res.send('add')})
+  
+
+
+})
+
+
+app.get('/results1', (req, res) => {
+
+  let temp=[];
+
+
+  const client = new MongoClient("mongodb://localhost:27017/mydb1");
+  client.connect()
+  const db = client.db();
+  db.collection('results').find({}).toArray((err, result) => {
+    // temp = result
+    // function reducer(acc,cur){
+    //   return {...acc, [cur._id]: cur.data1}
+    // }
+  
+    
+  
+    // let obj = temp.reduce(reducer,{})
+  
+    // console.log(obj)
+    // res.send(obj)
+
+    const obj = {};
+
+    for (let i = 0; i < result.length; i++) {
+      obj[i] = result[i].data1;
+    }
+
+    res.send(obj)
+  }
+
+
+
+
+
+  )
+
+  
+
+
+
+})
+
+
+
+
+
+
+app.post('/' , (req,res)=>{
+
+    if (req.files){
+        console.log(req.files)
+        var file = req.files.file
+        var filename = 'image.jpg'
+        file.mv('./uploads/' + filename, function (err) {
+            if (err){
+                res.send(err)
+            }
+            else {
+              resetDB();
+
+              res.redirect('/results')
+              call();
+            }
+            }
+        )
+
+    }
+})
+
+
 
 
 
@@ -24,12 +173,14 @@ var { spawn } = require('child_process');
 //     res.send(players)
 // })
 
+function call(){
+
 let search;
-const pythonProcess1 = spawn('python', ['new_image_demo.py', 'image.jpg']);
+const pythonProcess1 = spawn('python', ['new_image_demo.py', './uploads/image.jpg']);
 pythonProcess1.stdout.on('data', function (data) {
   //Here is where the output goes
 
-  // console.log('stdout: ' + data);
+  console.log('stdout: ' + data);
 
   data = data.toString();
   search += data;
@@ -49,9 +200,26 @@ pythonProcess1.stdout.on('end', function () {
   }
   else {
     console.log('error')
+    
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
   }
 })
-
+}
 
 
 
@@ -72,8 +240,12 @@ async function formalcall() {
   }
 
 
-  const pythonProcess = spawn('python', ['d.py', 'image4.jpg', arr,arr2]);
-  pythonProcess.stdout.on('data', data => console.log(`${data}`))
+  const pythonProcess = spawn('python', ['d.py', './uploads/image.jpg', arr, arr2]);
+  pythonProcess.stdout.on('data', data => {
+    console.log(`${data}`);
+    writeData({data1:`${data}`});
+
+  })
   console.log(lim)
 
   // await db.insertPlayername(i,channelData.el1[i],channelData.el2[i]);
@@ -99,3 +271,4 @@ async function formalcall() {
 
 
 // app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(3000)

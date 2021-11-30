@@ -2,10 +2,11 @@
   "name": "Man-City",
   "version": "0.1.0",
   "private": true,
-  
   "dependencies": {
     "body-parser": "^1.19.0",
+    "express-fileupload": "^1.2.1",
     "gh-pages": "2.0.1",
+    "mongodb": "^4.2.0",
     "mysql": "^2.18.1",
     "puppeteer": "^10.0.0",
     "react": "^16.8.6",

@@ -53,7 +53,7 @@ def image_downloader(img_url: str):
     param: img_url  str (Image url)
     Tries to download the image url and use name provided in headers. Else it randomly picks a name
     """
-    print(f'Downloading: {img_url}')
+    # print(f'Downloading: {img_url}')
     res = requests.get(img_url, stream=True)
     count = 1
     while res.status_code != 200 and count <= 5:
@@ -83,10 +83,10 @@ def run_downloader(process: int, images_url: list):
         process: (int) number of process to run
         images_url:(list) list of images url
     """
-    print(f'MESSAGE: Running {process} process')
+    # print(f'MESSAGE: Running {process} process')
     results = ThreadPool(process).imap_unordered(image_downloader, images_url)
-    for r in results:
-        print(r)
+    # for r in results:
+    #     print(r)
 
 
 try:
@@ -193,32 +193,32 @@ for x in arr:
       residual_threshold=20,
       max_trials=1000)
 
-    print('Found %d inliers' % sum(inliers))
+    # print('Found %d inliers' % sum(inliers))
     count = sum(inliers)
     arr3.append(count)
 
 
   try: match_images(image1, image2, result1, result2)
   except: 
-    print ('e')
+    # print ('e')
     arr3.append(0)
     
  
   # print(arr2[index])
   index=index+1
 
-print('new')
-print(arr3)
+# print('new')
+# print(arr3)
 max_value=max(arr3)
 max1=arr3.index(max_value)
-print(max1)
+# print(max1)
 print('https://www.amazon.com/' + arr2[max1])
 
 end = time.time()
 
 
 
-print(end - start)
+# print(end - start)
 
 
 
