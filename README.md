@@ -1,6 +1,7 @@
 
 
 
+
   
 <h1 align=center> Visual-Search_for_Ecommerce </h1>
 
@@ -129,12 +130,20 @@ npm install
 ```sh
 pip install -r requirements.txt
 ```
-4. Run the project using Node
+4. Download the weights file from link: [https://drive.google.com/file/d/1D6U3ddtuHqslT_5QZWZUdjg9o0DBFQgl/view?usp=sharing](https://drive.google.com/file/d/1D6U3ddtuHqslT_5QZWZUdjg9o0DBFQgl/view?usp=sharing)
+ and save it to a path given below:
+```sh
+Visual-Search_for_Ecommerce\src\yolo\weights\
+```
+
+5. Run the project using Command Prompt by: 
 
 ```sh
-cd src
-node main.js
+cd Visual-Search_for_Ecommerce\src
+node index-server.js
 ```
+6. Now open the http://localhost:3000/ on your browser.
+
   
   
 
